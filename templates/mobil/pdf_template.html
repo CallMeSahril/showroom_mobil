@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan Data Mobil</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; }
+    h2, h4 { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .kop {
+      text-align: center;
+      margin-bottom: 10px;
+      border-bottom: 2px solid black;
+      padding-bottom: 5px;
+    }
+    .summary {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- KOP -->
+  <div class="kop">
+    <h2>PT Showroom Mobil Indonesia</h2>
+    <p>Jl. Otista Raya No. 123, Jakarta Timur</p>
+    <p>Email: info@showroommobil.id | Telp: (021) 123-4567</p>
+  </div>
+
+  <!-- Tanggal Cetak -->
+  <p><strong>Tanggal Cetak:</strong> {{ tanggal }}</p>
+
+  <!-- Judul -->
+  <h4>Daftar Kendaraan yang Tersedia</h4>
+
+  <!-- Tabel Data -->
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Kode</th>
+        <th>Merek</th>
+        <th>Model</th>
+        <th>Tahun</th>
+        <th>Kondisi</th>
+        <th>Harga</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set total_harga = 0 %}
+      {% for m in data %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ m[0] }}</td>
+        <td>{{ m[1] }}</td>
+        <td>{{ m[2] }}</td>
+        <td>{{ m[5] }}</td>
+        <td>{{ m[10] }}</td>
+        <td>Rp {{ "{:,.0f}".format(m[6]) }}</td>
+      </tr>
+      {% set total_harga = total_harga + m[6] %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Ringkasan -->
+  <div class="summary">
+    Jumlah Kendaraan: {{ data|length }}<br>
+    Total Harga: Rp {{ "{:,.0f}".format(total_harga) }}
+  </div>
+
+</body>
+</html>

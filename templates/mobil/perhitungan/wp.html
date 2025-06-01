@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block page_title %}Perhitungan WP{% endblock %}
+
+{% block content %}
+<h4 class="mb-3">Perhitungan Weighted Product</h4>
+
+<!-- Filter Skenario -->
+<form method="GET" action="/mobil/perhitungan/wp" class="form-inline mb-4">
+    <label class="mr-2">Pilih Skenario:</label>
+    <select name="skenario_id" class="form-control mr-2">
+        {% for s in skenario_list %}
+        <option value="{{ s[0] }}" {% if skenario_aktif[0]==s[0] %}selected{% endif %}>
+            {{ s[1] }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Hitung</button>
+</form>
+
+<!-- Tabel Hasil -->
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>No</th>
+            <th>Kode</th>
+            <th>Merek</th>
+            <th>Model</th>
+            <th>Skor S</th>
+            <th>Nilai V</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in alternatif %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ a.kode }}</td>
+            <td>{{ a.merek }}</td>
+            <td>{{ a.model }}</td>
+            <td>{{ a.skor }}</td>
+            <td><strong>{{ a.nilai }}</strong></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
