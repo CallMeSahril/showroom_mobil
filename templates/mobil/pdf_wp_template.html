@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Perhitungan WP</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        table { border-collapse: collapse; width: 100%; }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 8px; text-align: center; }
+        h3, p { text-align: center; }
+    </style>
+</head>
+<body>
+    <h3>Laporan Perhitungan Weighted Product</h3>
+    <p>Tanggal: {{ tanggal }}</p>
+    {% if merek %}
+    <p>Filter Merek: {{ merek }}</p>
+    {% endif %}
+    <p>Skenario: {{ skenario[1] }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Kode</th>
+                <th>Merek</th>
+                <th>Model</th>
+                <th>Skor S</th>
+                <th>Nilai V</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in alternatif %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ a.kode }}</td>
+                <td>{{ a.merek }}</td>
+                <td>{{ a.model }}</td>
+                <td>{{ a.skor }}</td>
+                <td>{{ a.nilai }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

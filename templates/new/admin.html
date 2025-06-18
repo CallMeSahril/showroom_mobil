@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - AutoSelect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+
+  <!-- Navigasi -->
+  <div id="nav-placeholder"></div>
+
+  <!-- Konten -->
+  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard Admin</h1>
+
+    <!-- Form Tambah Mobil -->
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <h2 class="text-lg font-medium text-gray-800 mb-4">Tambah Data Mobil</h2>
+      <form id="form-mobil" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <input type="text" placeholder="Merek" id="merek" class="border p-2 rounded" required>
+        <input type="text" placeholder="Model" id="model" class="border p-2 rounded" required>
+        <input type="number" placeholder="Tahun" id="tahun" class="border p-2 rounded" required>
+        <input type="number" placeholder="Harga" id="harga" class="border p-2 rounded" required>
+        <input type="number" placeholder="Konsumsi BBM (mpg)" id="bbm" class="border p-2 rounded" required>
+        <input type="number" placeholder="Jarak Tempuh (km)" id="jarak" class="border p-2 rounded" required>
+        <input type="number" placeholder="Keamanan (0–10)" id="keamanan" class="border p-2 rounded" required>
+        <input type="url" placeholder="URL Gambar" id="gambar" class="border p-2 rounded" required>
+        <div class="col-span-full">
+          <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tambah Mobil</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tabel Data Mobil -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-medium text-gray-800 mb-4">Daftar Mobil</h2>
+      <table class="min-w-full divide-y divide-gray-200 text-sm">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-2 text-left">Merek</th>
+            <th class="px-4 py-2 text-left">Model</th>
+            <th class="px-4 py-2 text-left">Tahun</th>
+            <th class="px-4 py-2 text-left">Harga</th>
+            <th class="px-4 py-2 text-left">BBM</th>
+            <th class="px-4 py-2 text-left">Jarak</th>
+            <th class="px-4 py-2 text-left">Keamanan</th>
+            <th class="px-4 py-2 text-left">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-mobil" class="bg-white divide-y divide-gray-200">
+          <!-- Baris akan ditambahkan via JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Komponen -->
+  <script>
+    fetch('components/nav.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+    fetch('components/footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+  </script>
+
+  <!-- Script Sederhana -->
+  <script>
+    const daftarMobil = [];
+
+    const form = document.getElementById("form-mobil");
+    const tabel = document.getElementById("tabel-mobil");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const mobil = {
+        merek: form.merek.value,
+        model: form.model.value,
+        tahun: form.tahun.value,
+        harga: form.harga.value,
+        bbm: form.bbm.value,
+        jarak: form.jarak.value,
+        keamanan: form.keamanan.value,
+        gambar: form.gambar.value
+      };
+      daftarMobil.push(mobil);
+      renderTabel();
+      form.reset();
+    });
+
+    function renderTabel() {
+      tabel.innerHTML = "";
+      daftarMobil.forEach((m, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="px-4 py-2">${m.merek}</td>
+          <td class="px-4 py-2">${m.model}</td>
+          <td class="px-4 py-2">${m.tahun}</td>
+          <td class="px-4 py-2">Rp ${parseInt(m.harga).toLocaleString()}</td>
+          <td class="px-4 py-2">${m.bbm} mpg</td>
+          <td class="px-4 py-2">${parseInt(m.jarak).toLocaleString()} km</td>
+          <td class="px-4 py-2">${m.keamanan}</td>
+          <td class="px-4 py-2 text-red-600 cursor-pointer hover:underline" onclick="hapusMobil(${i})">Hapus</td>
+        `;
+        tabel.appendChild(row);
+      });
+    }
+
+    function hapusMobil(index) {
+      daftarMobil.splice(index, 1);
+      renderTabel();
+    }
+  </script>
+</body>
+</html>

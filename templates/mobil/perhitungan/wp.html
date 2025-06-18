@@ -5,19 +5,30 @@
 <h4 class="mb-3">Perhitungan Weighted Product</h4>
 
 <!-- Filter Skenario -->
-<form method="GET" action="/mobil/perhitungan/wp" class="form-inline mb-4">
-    <label class="mr-2">Pilih Skenario:</label>
-    <select name="skenario_id" class="form-control mr-2">
-        {% for s in skenario_list %}
-        <option value="{{ s[0] }}" {% if skenario_aktif[0]==s[0] %}selected{% endif %}>
-            {{ s[1] }}
-        </option>
-        {% endfor %}
-    </select>
+<form method="GET" action="/mobil/perhitungan/wp" class="mb-4">
+    <div class="form-group mb-2">
+        <label for="skenario_id">Pilih Skenario:</label>
+        <select name="skenario_id" class="form-control">
+            {% for s in skenario_list %}
+            <option value="{{ s[0] }}" {% if skenario_aktif[0]==s[0] %}selected{% endif %}>{{ s[1] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group mb-2">
+        <label for="merek">Merek:</label>
+        <input type="text" name="merek" class="form-control" value="{{ merek|default('') }}"
+            placeholder="Contoh: Toyota">
+    </div>
+
     <button type="submit" class="btn btn-primary">Hitung</button>
 </form>
 
 <!-- Tabel Hasil -->
+<a href="{{ url_for('mobil.export_wp_pdf', skenario_id=skenario_aktif[0], merek=merek) }}" class="btn btn-success ml-2">
+    Download PDF
+</a>
+
 <table class="table table-bordered table-striped">
     <thead class="thead-dark">
         <tr>

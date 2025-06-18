@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoSelect - Tentang WP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+
+  <!-- Navigasi -->
+  <div id="nav-placeholder"></div>
+
+  <!-- Konten Utama -->
+  <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow overflow-hidden rounded-lg">
+      <div class="px-4 py-5 sm:px-6 bg-blue-50">
+        <h1 class="text-lg leading-6 font-medium text-gray-900">Tentang Metode Weighted Product (WP)</h1>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500">Bagaimana sistem pendukung keputusan ini bekerja.</p>
+      </div>
+      <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+        <div class="sm:divide-y sm:divide-gray-200">
+
+          <!-- Ringkasan Metode -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Ringkasan Metode</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              Weighted Product (WP) adalah metode pengambilan keputusan multikriteria yang menghitung skor dari alternatif berdasarkan nilai setiap kriteria dan bobotnya. Cocok digunakan untuk membandingkan alternatif yang memiliki atribut untung dan atribut biaya.
+            </dd>
+          </div>
+
+          <!-- Langkah-langkah Perhitungan -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Langkah-langkah Perhitungan</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <ol class="list-decimal pl-5 space-y-2">
+                <li><strong>Normalisasi:</strong> Mengubah nilai kriteria ke dalam skala yang seragam (0–1).</li>
+                <li><strong>Pembobotan:</strong> Bobot diberikan sesuai tingkat kepentingan masing-masing kriteria.</li>
+                <li><strong>Hitung S<sub>i</sub>:</strong> S<sub>i</sub> = ∏(x<sub>ij</sub>)<sup>w<sub>j</sub></sup>, di mana x<sub>ij</sub> adalah nilai ter-normalisasi, dan w<sub>j</sub> adalah bobot.</li>
+                <li><strong>Hitung V<sub>i</sub>:</strong> V<sub>i</sub> = S<sub>i</sub> / ∑S<sub>i</sub> untuk mendapatkan nilai preferensi.</li>
+                <li><strong>Peringkat:</strong> Urutkan berdasarkan nilai V<sub>i</sub> dari yang tertinggi ke yang terendah.</li>
+              </ol>
+            </dd>
+          </div>
+
+          <!-- Contoh Perhitungan -->
+          <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Contoh Perhitungan</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <p class="mb-2">Misalkan terdapat dua mobil dengan nilai normalisasi sebagai berikut:</p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li><strong>Mobil A:</strong> Harga=0.8, Tahun=0.9, BBM=0.7, Jarak Tempuh=0.6</li>
+                <li><strong>Mobil B:</strong> Harga=0.7, Tahun=0.8, BBM=0.9, Jarak Tempuh=0.7</li>
+              </ul>
+              <p class="mt-2">Bobot: Harga=3, Tahun=2, BBM=4, Jarak Tempuh=3</p>
+              <p class="mt-2">S<sub>A</sub> = (0.8)<sup>3</sup> × (0.9)<sup>2</sup> × (0.7)<sup>4</sup> × (0.6)<sup>3</sup> ≈ 0.0065</p>
+              <p>S<sub>B</sub> = (0.7)<sup>3</sup> × (0.8)<sup>2</sup> × (0.9)<sup>4</sup> × (0.7)<sup>3</sup> ≈ 0.0104</p>
+              <p class="mt-2">V<sub>A</sub> = 0.0065 / (0.0065 + 0.0104) ≈ 0.385</p>
+              <p>V<sub>B</sub> = 0.0104 / (0.0065 + 0.0104) ≈ 0.615</p>
+              <p class="mt-2 font-medium text-green-600">Jadi, Mobil B memiliki peringkat yang lebih tinggi.</p>
+            </dd>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Komponen -->
+  <script>
+    fetch('components/nav.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+    fetch('components/footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+  </script>
+</body>
+</html>

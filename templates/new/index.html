@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoSelect - Beranda</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50">
+
+  <!-- Navigasi -->
+  <div id="nav-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="bg-blue-600 text-white py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-4xl font-extrabold sm:text-5xl lg:text-6xl mb-4">
+          Temukan Mobil Impian Anda dengan Bantuan AI
+        </h1>
+        <p class="text-xl text-blue-100">
+          Algoritma Weighted Product membantu Anda membandingkan mobil secara objektif berdasarkan prioritas Anda.
+        </p>
+        <button class="mt-8 bg-white text-blue-600 px-6 py-3 rounded-md text-lg font-medium hover:bg-blue-50 transition">
+          Mulai Sekarang
+        </button>
+      </div>
+      <img src="https://images.unsplash.com/photo-1494972308805-463d619d34ab" class="rounded-lg shadow-2xl w-full h-auto" alt="Mobil Mewah" />
+    </div>
+  </section>
+
+  <!-- Daftar Mobil -->
+  <section class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-bold text-gray-900">Mobil Tersedia</h2>
+      <div class="flex space-x-4">
+        <button id="filter-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+          <i class="fas fa-filter mr-2"></i>Filter
+        </button>
+        <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+          <i class="fas fa-balance-scale mr-2"></i>Bandingkan
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Filter -->
+    <div id="filter-panel" class="hidden bg-white p-6 rounded-lg shadow-md mb-8">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">Kriteria Filter</h3>
+      <!-- Isi slider bisa ditambahkan jika perlu -->
+    </div>
+
+    <!-- Kartu Mobil -->
+    <div id="car-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Konten akan diisi melalui JavaScript -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Load Komponen -->
+  <script>
+    // Memuat komponen navigasi dan footer
+    fetch('components/nav.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
+    fetch('components/footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+  </script>
+
+  <!-- Script Logika Utama -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 from db import mysql
+from MySQLdb.cursors import DictCursor
 
 
 class MobilModel:
@@ -95,50 +96,60 @@ class MobilModel:
         cur.close()
         return result
 
+    def proses_wp(self, skenario_bobot, merek_filter=None):
+        cur = mysql.connection.cursor(DictCursor)
 
-def proses_wp(self, skenario_bobot):
-    data = self.get_all()
-
-    # Ambil semua nilai per kriteria
-    harga = [d['harga'] for d in data]
-    tahun = [d['tahun'] for d in data]
-    km = [d['km'] for d in data]
-    bbm = [d['bbm'] for d in data]
-    kondisi = [d['kondisi'] for d in data]
-    pajak = [d['pajak'] for d in data]
-
-    # Normalisasi: benefit dan cost
-    def normalize(arr, benefit=True):
-        arr = [float(v) for v in arr]
-        if benefit:
-            max_val = max(arr)
-            return [v / max_val for v in arr]
+        if merek_filter:
+            cur.execute("SELECT * FROM mobil WHERE merek LIKE %s",
+                        (f"%{merek_filter}%",))
         else:
-            min_val = min(arr)
-            return [min_val / v for v in arr]
+            cur.execute("SELECT * FROM mobil")
+        data = cur.fetchall()
+        cur.close()
+        # Ambil semua nilai per kriteria langsung sebagai angka
+        harga = [float(d['harga']) for d in data]
+        tahun = [float(d['tahun']) for d in data]
+        km = [float(d['km']) for d in data]
+        bbm = [float(d['bbm']) for d in data]
+        kondisi = [float(d['kondisi']) for d in data]  # Langsung pakai angka
+        pajak = [float(d['pajak']) for d in data]
 
-    norm_harga = normalize(harga, benefit=False)
-    norm_tahun = normalize(tahun, benefit=True)
-    norm_km = normalize(km, benefit=False)
-    norm_bbm = normalize(bbm, benefit=True)
-    norm_kondisi = normalize(kondisi, benefit=True)
-    norm_pajak = normalize(pajak, benefit=True)
+        def normalize(arr, benefit=True):
+            arr = [float(v) for v in arr]
+            if benefit:
+                max_val = max(arr)
+                return [v / max_val for v in arr]
+            else:
+                min_val = min(arr)
+                return [min_val / v if v != 0 else 0 for v in arr]
 
-    # Hitung WP
-    hasil = []
-    for i, d in enumerate(data):
-        skor = (
-            norm_harga[i] ** skenario_bobot['harga'] *
-            norm_tahun[i] ** skenario_bobot['tahun'] *
-            norm_km[i] ** skenario_bobot['km'] *
-            norm_bbm[i] ** skenario_bobot['bbm'] *
-            norm_kondisi[i] ** skenario_bobot['kondisi'] *
-            norm_pajak[i] ** skenario_bobot['pajak']
-        )
-        hasil.append({
-            "kode": d['kode'],
-            "merek": d['merek'],
-            "model": d['model'],
-            "skor": round(skor, 6)
-        })
-    return sorted(hasil, key=lambda x: x['skor'], reverse=True)
+        norm_harga = normalize(harga, benefit=False)
+        norm_tahun = normalize(tahun, benefit=True)
+        norm_km = normalize(km, benefit=False)
+        norm_bbm = normalize(bbm, benefit=True)
+        norm_kondisi = normalize(kondisi, benefit=True)
+        norm_pajak = normalize(pajak, benefit=True)
+
+        hasil = []
+        for i, d in enumerate(data):
+            skor = (
+                norm_harga[i] ** skenario_bobot['harga'] *
+                norm_tahun[i] ** skenario_bobot['tahun'] *
+                norm_km[i] ** skenario_bobot['km'] *
+                norm_bbm[i] ** skenario_bobot['bbm'] *
+                norm_kondisi[i] ** skenario_bobot['kondisi'] *
+                norm_pajak[i] ** skenario_bobot['pajak']
+            )
+            hasil.append({
+                "kode": d['kode'],
+                "merek": d['merek'],
+                "model": d['model'],
+                "skor": round(skor, 6)
+            })
+
+        # Hitung nilai preferensi (V)
+        total_skor = sum([h['skor'] for h in hasil])
+        for h in hasil:
+            h['nilai'] = round(h['skor'] / total_skor, 6)
+
+        return sorted(hasil, key=lambda x: x['nilai'], reverse=True)
